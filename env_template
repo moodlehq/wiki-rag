@@ -61,3 +61,6 @@ AUTH_URL="http://0.0.0.0:4000/key/info"
 
 # User agent for the crawler.
 USER_AGENT="Moodle Research Wiki-RAG Crawler/{version} (https://github.com/moodlehq/wiki-rag)"
+
+# Rate limiting setting for the crawler. Turning it off may overwhelm the server and may not be permitted by the mediawiki site.
+ENABLE_RATE_LIMITING=true

@@ -91,7 +91,8 @@ def get_mediawiki_parsed_pages(
         pages: list[dict],
         user_agent: str,
         exclusions: dict[str, list[str]],
-        keep_templates: list[str]
+        keep_templates: list[str],
+        enable_rate_limiting: bool,
 ) -> list[dict]:
     """Parse the pages and split them into sections.
 
@@ -100,13 +101,15 @@ def get_mediawiki_parsed_pages(
     :param user_agent: The user agent to use in the requests.
     :param exclusions: The list of exclusions to apply to the pages.
     :param keep_templates: The list of templates to keep in the wiki text.
+    :param enable_rate_limiting: A boolean that specifies whether requests should be rate limited. Default is true, can be switched off with the environment variable ENABLE_RATE_LIMITING="false"
     :return: The list of parsed pages.
     """
     parsed_pages = []
     for page in tqdm(pages, desc="Processing pages", unit="page"):
-        time.sleep(random.uniform(2, 3))  # We aren't in a hurry (it's only a few requests).
+        if enable_rate_limiting:
+            time.sleep(random.uniform(2, 3))
         try:
-            sections, categories, templates, internal_links, external_links, language_links = parse_page(
+            sections, categories, templates, internal_links, external_links, language_links = fetch_and_parse_page(
                 mediawiki_url, page["pageid"], user_agent, exclusions)  # Parse pages and sections.
             if not sections:  # Something, maybe an exclusion, caused this page to be skipped.
                 continue
@@ -136,7 +139,7 @@ def get_mediawiki_parsed_pages(
     return parsed_pages
 
 
-def parse_page(mediawiki_url: str, page_id: int, user_agent: str, exclusions: dict[str, list[str]]) -> list:
+def fetch_and_parse_page(mediawiki_url: str, page_id: int, user_agent: str, exclusions: dict[str, list[str]]) -> list:
     """Fetch a page using mediawiki api and process it completely."""
     api_url = f"{mediawiki_url}/api.php"
     headers = {
