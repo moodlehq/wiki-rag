@@ -6,7 +6,7 @@ OPENAI_API_BASE="https://openai.com/v1"
 # OPENAI_API_KEY="<<<YOUR_OPENAI_API_KEY>>>"
 
 # Mediawiki instance base URL.
-MEDIAWIKI_URL="https://your.mediaiki/base/url
+MEDIAWIKI_URL="https://your.mediawiki/base/url"
 # Comma separated list (general and others, see https://www.mediawiki.org/wiki/Manual:Namespace#Built-in_namespaces)
 MEDIAWIKI_NAMESPACES="0,4,12"
 MEDIAWIKI_EXCLUDED="categories:Category A, Category B;wikitext:Some regex to exclude"
@@ -61,3 +61,6 @@ AUTH_URL="http://0.0.0.0:4000/key/info"
 
 # User agent for the crawler.
 USER_AGENT="Moodle Research Wiki-RAG Crawler/{version} (https://github.com/moodlehq/wiki-rag)"
+
+# Rate limiting setting for the crawler. Turning it off may overwhelm the server and may not be permitted by the mediawiki site.
+ENABLE_RATE_LIMITING=true

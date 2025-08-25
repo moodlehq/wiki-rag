@@ -98,12 +98,29 @@ def main():
         user_agent = "Moodle Research Crawler/{version} (https://git.in.moodle.com/research)"
     user_agent = f"{user_agent.format(version=__version__)}"
 
+    enable_rate_limiting_setting: str | None = os.getenv("ENABLE_RATE_LIMITING")
+    if not enable_rate_limiting_setting:
+        logger.info("ENABLE_RATE_LIMITING setting not found in environment. Using the default value 'true'")
+        enable_rate_limiting_setting = "true"
+    
+    enable_rate_limiting_setting = enable_rate_limiting_setting.lower() # lowercase it to accept different cases of true and false
+
+    if enable_rate_limiting_setting == "true":
+        enable_rate_limiting = True
+        logger.info("Rate limiting is enabled.")
+    elif enable_rate_limiting_setting == "false":
+        enable_rate_limiting = False
+        logger.info("Rate limiting is disabled.")
+    else:
+        logger.error("ENABLE_RATE_LIMITING environment variable can only get values 'true' or 'false'. Exiting.")
+        sys.exit(1)
+
     logger.info(f"Pre-loading page list for mediawiki: {mediawiki_url}, namespaces: {mediawiki_namespaces}")
     pages = get_mediawiki_pages_list(mediawiki_url, mediawiki_namespaces, user_agent)
     logger.info(f"Loaded {len(pages)} pages.")
 
-    logger.info("Parsing and splitting pages")
-    parsed_pages = get_mediawiki_parsed_pages(mediawiki_url, pages, user_agent, exclusions, keep_templates)
+    logger.info("Fetching, parsing and splitting pages")
+    parsed_pages = get_mediawiki_parsed_pages(mediawiki_url, pages, user_agent, exclusions, keep_templates, enable_rate_limiting)
     logger.info(f"Parsed {len(parsed_pages)} pages.")
 
     logger.info(f"Saving parsed pages to {dump_filename}")
