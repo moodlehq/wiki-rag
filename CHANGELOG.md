@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html),
 and commits should be formatted using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [0.9.1] - 2025-08-25
+
+### Changed
+
+- Dependencies: Update all runtime and development dependencies by @stronk7 ([679737a](https://github.com/moodlehq/wiki-rag/commit/679737a2dc65c587980a777348b1302895e87f2b))
+
+### Fixed
+
+- Loader: Solve a problem while loading files with 1 section by @stronk7 ([2ca8643](https://github.com/moodlehq/wiki-rag/commit/2ca8643cac275884084c381db1afa201be823d31))
+
+**Full Changelog**: https://github.com/moodlehq/wiki-rag/compare/v0.9.0...v0.9.1
+
 ## [0.9.0] - 2025-05-20
 
 ### Added
@@ -309,6 +321,7 @@ and commits should be formatted using [Conventional Commits](https://www.convent
 
 
 
+[0.9.1]: https://github.com/moodlehq/wiki-rag/compare/v0.9.0..v0.9.1
 [0.9.0]: https://github.com/moodlehq/wiki-rag/compare/v0.8.0..v0.9.0
 [0.8.0]: https://github.com/moodlehq/wiki-rag/compare/v0.7.1..v0.8.0
 [0.7.1]: https://github.com/moodlehq/wiki-rag/compare/v0.7.0..v0.7.1

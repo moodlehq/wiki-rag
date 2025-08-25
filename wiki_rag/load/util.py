@@ -193,7 +193,7 @@ def fetch_and_parse_page(mediawiki_url: str, page_id: int, user_agent: str, excl
     sections = []
     # If there aren't sections or the fist section doesn't start at 0, we need to add a section
     # with the text from the beginning of the page to it.
-    if not sections_info or sections_info[0]["byteoffset"] != 0:
+    if not sections_info or sections_info[0]["byteoffset"]:
         section_zero = {
             "anchor": "",
             "line": title,
@@ -211,7 +211,7 @@ def fetch_and_parse_page(mediawiki_url: str, page_id: int, user_agent: str, excl
         # TODO: Make this more robust, able to process other source types.
         source_path = f"{str.replace(title, ' ', '_')}#{section_anchor}".rstrip("/#")
         section_source = f"{mediawiki_url}/{source_path}"
-        section_byteoffset = section["byteoffset"]
+        section_byteoffset = section["byteoffset"] or 0
         # Now extract from section_byteoffset to text_end
         section_text = result.json()["parse"]["wikitext"]["*"][section_byteoffset:text_end]
         section_index = int(section["index"]) if section["index"] else 0
