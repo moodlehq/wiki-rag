@@ -11,11 +11,12 @@ and commits should be formatted using [Conventional Commits](https://www.convent
 ### Added
 
 - Config: Migrate (BC for now) from env-only to YAML + env configuration ([e7f5cb5](https://github.com/moodlehq/wiki-rag/commit/e7f5cb52b32f90415a53a82c520585138883e6c2))
+- Config: Add `generate-config.py` migration script
 
 ### Changed
 
 - GitHub: Update various GH actions to actual versions by @stronk7 ([5851e6a](https://github.com/moodlehq/wiki-rag/commit/5851e6ab0a507d682bb4d9124dd5dd0a08b6d3cd))
-- Config: Re-organise various config sections and model fallbacks
+- Config: Re-organise various config sections and model fallbacks ([ac1d099](https://github.com/moodlehq/wiki-rag/commit/ac1d099524cdc8e5bab1ebf8778f19dae8e75240))
 
 ### Fixed
 

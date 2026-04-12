@@ -33,6 +33,11 @@ To get started with Wiki-RAG, ensure you have the following:
      ```
    - Edit it to fill in API keys, tokens and other secrets.
 
+> **Upgrading from an older `.env`-only setup?** All non-secret settings (model names, URLs,
+> search parameters, etc.) have moved to `config.yml`. Run `python scripts/generate-config.py` to
+> generate a `config.yml` pre-populated from your existing `.env` — then remove those non-secret
+> variables from `.env` and keep only the secrets listed in `dotenv.template`.
+
 ## Installation
 
 ### Running Locally

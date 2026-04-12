@@ -44,6 +44,11 @@ body = """
         {% if commit.breaking %}
           {% raw %}  {% endraw %}- **BREAKING**: {{commit.breaking_description}}
         {% endif -%}
+        {%- if commit.footers -%}
+          {% for footer in commit.footers | filter(attribute="token", value="Info") %}
+            {% raw %}  {% endraw %}- {{ footer.token }}{{ footer.separator }} {{ footer.value }}\
+          {% endfor %}
+        {%- endif -%}
     {% endfor %}
 {% endfor %}
 {%- if not version -%}

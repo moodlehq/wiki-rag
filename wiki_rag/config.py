@@ -455,6 +455,10 @@ def load_config(command: str, config_path: Path | None = None) -> Config:
             "and will be removed in a future release. "
             "Please migrate your settings to config.yml."
         )
+        logger.warning(
+            "Run 'python scripts/generate-config.py' to generate config.yml "
+            "from your current .env file."
+        )
         logger.warning("=" * 72)
 
     # Convenience: partial application binding yaml_data.
