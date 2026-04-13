@@ -25,7 +25,7 @@ from typing import Any
 
 from dotenv import load_dotenv
 
-from wiki_rag import ROOT_DIR, __version__
+from wiki_rag import ROOT_DIR
 from wiki_rag.config import (
     _DEFAULT_USER_AGENT,
     _SECRETS,
@@ -210,7 +210,7 @@ def _generate_yaml(env_source: Path | None) -> str:
     """
     now = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     source_note = f"from {env_source}" if env_source else "from environment variables"
-    default_ua = _DEFAULT_USER_AGENT.format(version=__version__)
+    default_ua = _DEFAULT_USER_AGENT
 
     # Read all non-secret settings.
     mw_url, mw_url_src = _get("MEDIAWIKI_URL", "")
@@ -266,7 +266,6 @@ def _generate_yaml(env_source: Path | None) -> str:
     lf_prefix, lf_prefix_src = _get("LANGFUSE_PROMPT_PREFIX", "")
 
     user_agent, user_agent_src = _get("USER_AGENT", default_ua)
-    user_agent = str(user_agent).format(version=__version__)
 
     # 6-space indent: 4 spaces for the sites[0] block + 2 more under excluded:
     excl_lines = _fmt_excluded(mw_excl, indent="      ")

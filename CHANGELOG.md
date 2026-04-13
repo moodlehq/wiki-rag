@@ -10,17 +10,23 @@ and commits should be formatted using [Conventional Commits](https://www.convent
 
 ### Added
 
-- Config: Migrate (BC for now) from env-only to YAML + env configuration ([e7f5cb5](https://github.com/moodlehq/wiki-rag/commit/e7f5cb52b32f90415a53a82c520585138883e6c2))
-- Config: Add `generate-config.py` migration script
+- Config: Migrate (BC for now) from env-only to YAML + env configuration by @stronk7 ([e7f5cb5](https://github.com/moodlehq/wiki-rag/commit/e7f5cb52b32f90415a53a82c520585138883e6c2))
+- Config: Add `generate-config.py` migration script by @stronk7 ([631df11](https://github.com/moodlehq/wiki-rag/commit/631df115ff7c7c540cbbdcea0ce1757fde05616a))
+  - Info: To move from the, now deprecated, `.env` configuration file to
+  the new `config.yml`, run `python scripts/generate-config.py` to
+  generate it with your current settings. Then remove all non-secrets
+  from the `.env`, keeping only the secrets listed in `dotenv.template`
+  and you're done.
 
 ### Changed
 
 - GitHub: Update various GH actions to actual versions by @stronk7 ([5851e6a](https://github.com/moodlehq/wiki-rag/commit/5851e6ab0a507d682bb4d9124dd5dd0a08b6d3cd))
-- Config: Re-organise various config sections and model fallbacks ([ac1d099](https://github.com/moodlehq/wiki-rag/commit/ac1d099524cdc8e5bab1ebf8778f19dae8e75240))
+- Config: Re-organise various config sections and model fallbacks by @stronk7 ([ac1d099](https://github.com/moodlehq/wiki-rag/commit/ac1d099524cdc8e5bab1ebf8778f19dae8e75240))
 
 ### Fixed
 
 - Search: Use only HyDE passages for dense search, not the original query by @stronk7 ([1527624](https://github.com/moodlehq/wiki-rag/commit/1527624c924f9fdbb423d188a68c3026a656ed86))
+- Config: Preserve {version} placeholder in generated user_agent
 
 ## [0.14.0] - 2026-04-06
 
