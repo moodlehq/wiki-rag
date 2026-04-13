@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html),
 and commits should be formatted using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
-## [Unreleased]
+## [0.15.0] - 2026-04-13
 
 ### Added
 
@@ -26,7 +26,9 @@ and commits should be formatted using [Conventional Commits](https://www.convent
 ### Fixed
 
 - Search: Use only HyDE passages for dense search, not the original query by @stronk7 ([1527624](https://github.com/moodlehq/wiki-rag/commit/1527624c924f9fdbb423d188a68c3026a656ed86))
-- Config: Preserve {version} placeholder in generated user_agent
+- Config: Preserve {version} placeholder in generated user_agent by @stronk7 ([7583352](https://github.com/moodlehq/wiki-rag/commit/7583352825ca3bd348b6e1d83fc76de38b38af91))
+
+**Full Changelog**: https://github.com/moodlehq/wiki-rag/compare/v0.14.0...v0.15.0
 
 ## [0.14.0] - 2026-04-06
 
@@ -504,7 +506,7 @@ trivial and everything continues working exactly the same.
 
 
 
-[unreleased]: https://github.com/moodlehq/wiki-rag/compare/v0.14.0..HEAD
+[0.15.0]: https://github.com/moodlehq/wiki-rag/compare/v0.14.0..v0.15.0
 [0.14.0]: https://github.com/moodlehq/wiki-rag/compare/v0.13.1..v0.14.0
 [0.13.1]: https://github.com/moodlehq/wiki-rag/compare/v0.13.0..v0.13.1
 [0.13.0]: https://github.com/moodlehq/wiki-rag/compare/v0.12.2..v0.13.0
