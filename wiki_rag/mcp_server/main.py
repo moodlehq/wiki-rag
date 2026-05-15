@@ -5,6 +5,7 @@
 
 import logging
 
+from langfuse import Langfuse
 from langfuse.langchain import CallbackHandler
 
 import wiki_rag.mcp_server as mcp_global
@@ -61,8 +62,14 @@ def main():
 
     langfuse_callback = None
     if cfg.langfuse.tracing:
-        # Instantiate the handler once at startup; creating a new handler per
-        # request has a large impact on threads and performance.
+        # Register the global singleton with explicit credentials so CallbackHandler
+        # picks them up automatically. Creating a new handler per request has a large
+        # impact on threads and performance.
+        Langfuse(
+            public_key=cfg.langfuse_public_key,
+            secret_key=cfg.langfuse_secret_key,
+            host=cfg.langfuse.host,
+        )
         langfuse_callback = CallbackHandler()
 
     server.context = build_context_schema(cfg, langfuse_callback=langfuse_callback)

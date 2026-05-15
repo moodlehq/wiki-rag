@@ -19,7 +19,8 @@ and commits should be formatted using [Conventional Commits](https://www.convent
 ### Fixed
 
 - Index: Fix wr-index full-mode hang and improve Milvus robustness by @stronk7 ([5541bcb](https://github.com/moodlehq/wiki-rag/commit/5541bcb4fa1b180bbad60971b210af4cc1e58edb))
-- Config: Propagate LangSmith endpoint and tracing flag to SDK
+- Config: Propagate LangSmith endpoint and tracing flag to SDK by @stronk7 ([1f35322](https://github.com/moodlehq/wiki-rag/commit/1f353220618ce065905bb7d74f2fc50493116ca7))
+- Config: Propagate Langfuse credentials explicitly to SDK
 
 ## [0.15.0] - 2026-04-13
 

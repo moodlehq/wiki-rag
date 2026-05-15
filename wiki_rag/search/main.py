@@ -11,6 +11,7 @@ import sys
 import traceback
 
 from langchain_core.messages import AIMessageChunk
+from langfuse import Langfuse
 from langfuse.langchain import CallbackHandler
 
 import wiki_rag.vector as vector
@@ -47,6 +48,11 @@ async def run():
 
     langfuse_callback = None
     if cfg.langfuse.tracing:
+        Langfuse(
+            public_key=cfg.langfuse_public_key,
+            secret_key=cfg.langfuse_secret_key,
+            host=cfg.langfuse.host,
+        )
         langfuse_callback = CallbackHandler()
 
     context = build_context_schema(cfg, stream=stream, langfuse_callback=langfuse_callback)

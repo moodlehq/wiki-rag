@@ -233,7 +233,11 @@ def load_prompts_for_rag(prompt_name: str) -> ChatPromptTemplate:
                 api_key=_cfg.langsmith_api_key,
             ).pull_prompt(prefixed_prompt_name)
         elif _cfg.langfuse.prompts:
-            langfuse = Langfuse()
+            langfuse = Langfuse(
+                secret_key=_cfg.langfuse_secret_key,
+                public_key=_cfg.langfuse_public_key,
+                host=_cfg.langfuse.host,
+            )
             prefixed_prompt_name = f"{_cfg.langfuse.prompt_prefix}{prompt_name}"
             logger.info(f"Loading the prompt {prefixed_prompt_name} from Langfuse.")
             prompt_provider = "Langfuse"
