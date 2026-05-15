@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html),
 and commits should be formatted using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
-## [Unreleased]
+## [0.16.0] - 2026-05-15
 
 ### Added
 
@@ -20,7 +20,9 @@ and commits should be formatted using [Conventional Commits](https://www.convent
 
 - Index: Fix wr-index full-mode hang and improve Milvus robustness by @stronk7 ([5541bcb](https://github.com/moodlehq/wiki-rag/commit/5541bcb4fa1b180bbad60971b210af4cc1e58edb))
 - Config: Propagate LangSmith endpoint and tracing flag to SDK by @stronk7 ([1f35322](https://github.com/moodlehq/wiki-rag/commit/1f353220618ce065905bb7d74f2fc50493116ca7))
-- Config: Propagate Langfuse credentials explicitly to SDK
+- Config: Propagate Langfuse credentials explicitly to SDK by @stronk7 ([09e26a6](https://github.com/moodlehq/wiki-rag/commit/09e26a6d61d974706a56eab01b7c84c218f69342))
+
+**Full Changelog**: https://github.com/moodlehq/wiki-rag/compare/v0.15.0...v0.16.0
 
 ## [0.15.0] - 2026-04-13
 
@@ -522,7 +524,7 @@ trivial and everything continues working exactly the same.
 
 
 
-[unreleased]: https://github.com/moodlehq/wiki-rag/compare/v0.15.0..HEAD
+[0.16.0]: https://github.com/moodlehq/wiki-rag/compare/v0.15.0..v0.16.0
 [0.15.0]: https://github.com/moodlehq/wiki-rag/compare/v0.14.0..v0.15.0
 [0.14.0]: https://github.com/moodlehq/wiki-rag/compare/v0.13.1..v0.14.0
 [0.13.1]: https://github.com/moodlehq/wiki-rag/compare/v0.13.0..v0.13.1
