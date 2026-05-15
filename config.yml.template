@@ -213,6 +213,10 @@ milvus:
   # For backward compatibility, a URL with embedded credentials
   # (https://user:password@host:port) still works via MILVUS_URL env var.  # pragma: allowlist secret
   url: "http://0.0.0.0:19530"
+  # Timeout in seconds for Milvus client operations. When Milvus is unreachable,
+  # operations fail after this many seconds instead of blocking indefinitely.
+  # Env var: MILVUS_TIMEOUT
+  timeout: 30
 
 # ---------------------------------------------------------------------------
 # Observability

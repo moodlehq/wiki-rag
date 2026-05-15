@@ -254,6 +254,7 @@ def _generate_yaml(env_source: Path | None) -> str:
     mcp_auth_req, mcp_auth_req_src = _get("MCP_AUTH_REQUIRED", "true")
 
     milvus_url, milvus_url_src = _get("MILVUS_URL", "http://0.0.0.0:19530")
+    milvus_timeout, milvus_timeout_src = _get("MILVUS_TIMEOUT", "30")
 
     ls_tracing, ls_tracing_src = _get("LANGSMITH_TRACING", "false")
     ls_prompts, ls_prompts_src = _get("LANGSMITH_PROMPTS", "false")
@@ -413,6 +414,7 @@ def _generate_yaml(env_source: Path | None) -> str:
         "# ---------------------------------------------------------------------------",
         "milvus:",
         f"  url: {_fmt_str(milvus_url)}{_cmt(milvus_url_src, 1)}",
+        f"  timeout: {_fmt_float(milvus_timeout, default=30.0)}{_cmt(milvus_timeout_src, 1)}",
         "",
     ]
 

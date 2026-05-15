@@ -103,6 +103,8 @@ def main():
                 f"created: {summary['created']}, skipped: {summary['skipped']}, "
                 f"sections indexed: {summary['sections_indexed']}."
             )
+            logger.info(f"Flushing collection {cfg.collection_name}")
+            vector.store.flush_collection(cfg.collection_name)
             logger.info(f"Compacting collection {cfg.collection_name}")
             vector.store.compact_collection(cfg.collection_name)
         else:

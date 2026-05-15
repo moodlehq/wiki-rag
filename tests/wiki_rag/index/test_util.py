@@ -7,7 +7,11 @@ import unittest
 
 from unittest.mock import MagicMock, patch
 
-from wiki_rag.index.util import index_pages, index_pages_incremental
+from wiki_rag.index.util import (
+    index_pages,
+    index_pages_incremental,
+    replace_previous_collection,
+)
 
 
 def _make_section(page_id: int, idx: int = 0) -> dict:
@@ -147,6 +151,26 @@ class TestIndexPagesIncremental(unittest.TestCase):
         self.assertEqual(1, summary["created"])
         self.assertEqual(1, summary["skipped"])
         self.assertEqual(3, summary["sections_indexed"])  # 2 (updated) + 1 (created)
+
+
+class TestReplacePreviousCollection(unittest.TestCase):
+    """replace_previous_collection() must flush, compact, drop old, rename temp, then load."""
+
+    @patch("wiki_rag.index.util.vector")
+    def test_replace_drops_old_renames_temp_and_loads(self, mock_vector):
+        """flush, compact, drop, rename, and load are called in the correct order."""
+        mock_vector.store.collection_exists.return_value = True
+
+        replace_previous_collection("my_col", "my_col_temp")
+
+        mock_vector.store.flush_collection.assert_called_once_with("my_col_temp")
+        mock_vector.store.compact_collection.assert_called_once_with("my_col_temp")
+        mock_vector.store.drop_collection.assert_called_once_with("my_col")
+        mock_vector.store.rename_collection.assert_called_once_with("my_col_temp", "my_col")
+        mock_vector.store.load_collection.assert_called_once_with("my_col")
+
+        calls = [c[0] for c in mock_vector.store.method_calls]
+        self.assertLess(calls.index("flush_collection"), calls.index("compact_collection"))
 
 
 if __name__ == "__main__":

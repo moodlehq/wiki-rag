@@ -155,11 +155,33 @@ class BaseVector(ABC):
 
         """
 
+    def flush_collection(self, name: str) -> None:
+        """Flush all in-memory data to persistent storage, sealing any growing segments.
+
+        Must be called before compaction to ensure all inserted data is included.
+        Backends that do not require an explicit flush should leave this as a no-op.
+
+        Args:
+            name: Collection / index name.
+
+        """
+
     @abstractmethod
     def compact_collection(self, name: str) -> None:
         """Trigger maintenance / compaction on the collection / index.
 
         For stores that do not support compaction this method must be a
+        no-op.
+
+        Args:
+            name: Collection / index name.
+
+        """
+
+    def load_collection(self, name: str) -> None:
+        """Load the collection / index into memory for querying.
+
+        Backends that do not require an explicit load should leave this as a
         no-op.
 
         Args:

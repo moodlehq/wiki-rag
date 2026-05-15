@@ -198,15 +198,30 @@ def index_pages_incremental(
 
 
 def replace_previous_collection(collection_name: str, temp_collection_name: str) -> None:
-    """Replace the previous collection with the new one."""
+    """Replace the previous collection with the new one.
+
+    Compacts the temporary collection, drops any existing live collection,
+    renames the temporary collection to the live name, and then loads the
+    renamed collection into memory so it is immediately ready for querying.
+
+    Args:
+        collection_name: Name of the live collection to replace.
+        temp_collection_name: Name of the temporary collection that holds the
+            freshly indexed data.
+
+    """
     if not vector.store.collection_exists(temp_collection_name):
         msg = f"Collection {temp_collection_name} does not exist."
         raise ValueError(msg)
 
-    # We have inserted lots of data to the collection, let's compact it.
-    logger.info(f"Compacting collection {temp_collection_name}")
+    logger.info(f"Flushing collection {temp_collection_name!r} to seal segments before compaction")
+    vector.store.flush_collection(temp_collection_name)
+    logger.info(f"Compacting collection {temp_collection_name!r}")
     vector.store.compact_collection(temp_collection_name)
 
     if vector.store.collection_exists(collection_name):
         vector.store.drop_collection(collection_name)
     vector.store.rename_collection(temp_collection_name, collection_name)
+
+    logger.info(f"Loading collection {collection_name!r} into memory for querying")
+    vector.store.load_collection(collection_name)

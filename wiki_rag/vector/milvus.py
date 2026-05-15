@@ -49,6 +49,7 @@ class MilvusVector(BaseVector):
         """
         self.uri: str = cfg.milvus.url
         self.token: str = cfg.milvus_token or ""
+        self.timeout: float = cfg.milvus.timeout
         if not self.uri:
             logger.error("Milvus URL not found in configuration. Exiting.")
             sys.exit(1)
@@ -60,39 +61,84 @@ class MilvusVector(BaseVector):
 
         A pre-existing collection with the same name is dropped first.
         Both HNSW (dense) and BM25 (sparse) indexes are created for hybrid search.
+
+        The collection is NOT loaded into query-node memory after creation.
+        Callers must invoke :meth:`load_collection` when the collection is ready
+        to serve search or query requests.
+
+        Args:
+            collection_name: Name of the target collection.
+            embedding_dimension: Dimensionality of the dense vector field.
+
         """
-        client = MilvusClient(self.uri, token=self.token)
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
         if client.has_collection(collection_name):
+            logger.debug("Dropping existing collection %r before recreation", collection_name)
             client.drop_collection(collection_name)
 
         schema = self._build_schema(embedding_dimension)
         index_params = self._build_index_params(client)
-        client.create_collection(collection_name, schema=schema, index_params=index_params)
+
+        logger.debug("Creating collection %r (schema only, no auto-load)", collection_name)
+        client.create_collection(collection_name, schema=schema)
+        logger.debug("Collection %r created; building indexes", collection_name)
+
+        client.create_index(collection_name, index_params)
+        logger.debug("Indexes built for collection %r", collection_name)
+
         client.close()
 
     def collection_exists(self, name: str) -> bool:
         """Return True if the Milvus collection exists."""
-        client = MilvusClient(self.uri, token=self.token)
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
         exists = client.has_collection(name)
         client.close()
         return True if exists else False
 
     def drop_collection(self, name: str) -> None:
         """Delete the Milvus collection."""
-        client = MilvusClient(self.uri, token=self.token)
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
         client.drop_collection(name)
         client.close()
 
     def rename_collection(self, old: str, new: str) -> None:
         """Rename a Milvus collection atomically."""
-        client = MilvusClient(self.uri, token=self.token)
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
         client.rename_collection(old, new)
+        client.close()
+
+    def flush_collection(self, name: str) -> None:
+        """Flush all in-memory data to persistent storage, sealing growing segments.
+
+        Blocks until the flush is complete so that all inserted data is available
+        to subsequent compaction and index-build operations.
+
+        Args:
+            name: Collection name.
+
+        """
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
+        client.flush(name)
         client.close()
 
     def compact_collection(self, name: str) -> None:
         """Trigger Milvus compaction to reclaim disk space and optimise performance."""
-        client = MilvusClient(self.uri, token=self.token)
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
         client.compact(name)
+        client.close()
+
+    def load_collection(self, name: str) -> None:
+        """Load a Milvus collection into query-node memory.
+
+        Must be called before any search or query operation on a collection
+        that has not been loaded yet (e.g. after a full reindex).
+
+        Args:
+            name: Collection name.
+
+        """
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
+        client.load_collection(name)
         client.close()
 
     def delete_by_page_ids(self, collection_name: str, page_ids: list[int]) -> None:
@@ -106,7 +152,7 @@ class MilvusVector(BaseVector):
         """
         if not page_ids:
             return
-        client = MilvusClient(self.uri, token=self.token)
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
         try:
             client.delete(collection_name, filter=f"page_id in {page_ids}")
         finally:
@@ -121,7 +167,7 @@ class MilvusVector(BaseVector):
                 in the schema created by `create_collection`.
 
         """
-        client = MilvusClient(self.uri, token=self.token)
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
         try:
             client.insert(collection_name, records)
         except Exception:
@@ -146,7 +192,7 @@ class MilvusVector(BaseVector):
         """
         output_columns = ["id", "title", "text"]
 
-        milvus = MilvusClient(self.uri, token=self.token)
+        milvus = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
 
         # Let's find in the collection, the missing elements and get their titles and texts.
         missing_docs_db = milvus.query(
@@ -191,7 +237,7 @@ class MilvusVector(BaseVector):
             api_key=embedding_api_key,
         )
 
-        client = MilvusClient(self.uri, token=self.token)
+        client = MilvusClient(self.uri, token=self.token, timeout=self.timeout)
 
         # TODO: Make a bunch of the defaults used here configurable.
         dense_search_limit = 20

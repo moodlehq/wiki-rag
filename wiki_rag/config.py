@@ -138,6 +138,7 @@ class MilvusConfig:
     """Milvus vector store connection configuration (non-secret part)."""
 
     url: str
+    timeout: float
 
 
 @dataclasses.dataclass(frozen=True)
@@ -535,8 +536,9 @@ def load_config(command: str, config_path: Path | None = None) -> Config:
     mcp_api_base = _v("MCP_API_BASE", "mcp.api_base")
     mcp_auth_required_raw = _v("MCP_AUTH_REQUIRED", "mcp.auth_required", "true")
 
-    # --- Milvus (non-secret connection URL) ---
+    # --- Milvus (non-secret connection settings) ---
     milvus_url = _v("MILVUS_URL", "milvus.url", "")
+    milvus_timeout_raw = _v("MILVUS_TIMEOUT", "milvus.timeout", "30")
 
     # --- LangSmith (non-secret settings) ---
     langsmith_tracing_raw = _v("LANGSMITH_TRACING", "observability.langsmith.tracing", "false")
@@ -615,6 +617,7 @@ def load_config(command: str, config_path: Path | None = None) -> Config:
             keep_templates=keep_templates,
         )]
 
+    milvus_timeout = _parse_float(milvus_timeout_raw, default=30.0)
     rate_limiting = _parse_bool(rate_limiting_raw, default=True)
     embedding_dimensions = _parse_int(embedding_dimensions_raw)
     distance_cutoff = _parse_float(distance_cutoff_raw, default=0.6)
@@ -766,6 +769,7 @@ def load_config(command: str, config_path: Path | None = None) -> Config:
         ),
         milvus=MilvusConfig(
             url=str(milvus_url),
+            timeout=milvus_timeout,
         ),
         langsmith=LangsmithConfig(
             tracing=langsmith_tracing,
