@@ -716,10 +716,13 @@ def load_config(command: str, config_path: Path | None = None) -> Config:
     # OPENAI_API_KEY and base_url are now passed explicitly to each model
     # client via api_key= and base_url= respectively.  No implicit write needed.
 
-    # LangSmith SDK reads LANGSMITH_PROJECT and LANGSMITH_PROMPT_PREFIX.
+    # LangSmith SDK reads these vars at call time; set them all from config so
+    # the user does not need to duplicate non-secret values in the environment.
     if langsmith_tracing or langsmith_prompts:
         os.environ["LANGSMITH_PROJECT"] = collection_name or ""
         os.environ["LANGSMITH_PROMPT_PREFIX"] = langsmith_prompt_prefix
+        os.environ["LANGSMITH_ENDPOINT"] = str(langsmith_endpoint or "")
+        os.environ["LANGCHAIN_TRACING_V2"] = "true" if langsmith_tracing else "false"
 
     # ------------------------------------------------------------------
     # 9. Assemble Config.

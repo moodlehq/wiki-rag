@@ -14,7 +14,12 @@ and commits should be formatted using [Conventional Commits](https://www.convent
 
 ### Changed
 
-- Improve installation instructions and docker-compose setup.
+- Improve installation instructions and docker-compose setup by @stronk7 ([ea19092](https://github.com/moodlehq/wiki-rag/commit/ea1909274047144b3eed8fc58027906481b99f8f))
+
+### Fixed
+
+- Index: Fix wr-index full-mode hang and improve Milvus robustness by @stronk7 ([5541bcb](https://github.com/moodlehq/wiki-rag/commit/5541bcb4fa1b180bbad60971b210af4cc1e58edb))
+- Config: Propagate LangSmith endpoint and tracing flag to SDK
 
 ## [0.15.0] - 2026-04-13
 
