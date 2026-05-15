@@ -10,7 +10,11 @@ and commits should be formatted using [Conventional Commits](https://www.convent
 
 ### Added
 
-- Server: Add `auth_required` flag to openai and mcp server config.
+- Server: Add auth_required flag to openai and mcp server config by @stronk7 ([38f65a5](https://github.com/moodlehq/wiki-rag/commit/38f65a5db1cf1f8f00d13bb49390c7b778b4ba47))
+
+### Changed
+
+- Improve installation instructions and docker-compose setup.
 
 ## [0.15.0] - 2026-04-13
 

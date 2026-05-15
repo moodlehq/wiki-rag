@@ -21,10 +21,10 @@ services:
     container_name: wiki-rag
     volumes:
       - ./data:/app/data
+      - ./config.yml:/app/config.yml
       - ./.env:/app/.env
     environment:
       MILVUS_URL: http://milvus-standalone:19530
-      OPENAI_API_KEY: ${OPENAI_API_KEY}
       LOG_LEVEL: info
     ports:
       - "8081:8080"
