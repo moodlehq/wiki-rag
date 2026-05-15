@@ -122,6 +122,7 @@ class WrapperConfig:
     chat_max_tokens: int
     # May be empty string; callers fall back to collection_name at use time.
     model_name: str
+    auth_required: bool
 
 
 @dataclasses.dataclass(frozen=True)
@@ -129,6 +130,7 @@ class McpConfig:
     """MCP server configuration."""
 
     api_base: str
+    auth_required: bool
 
 
 @dataclasses.dataclass(frozen=True)
@@ -527,9 +529,11 @@ def load_config(command: str, config_path: Path | None = None) -> Config:
     wrapper_chat_max_turns_raw = _v("WRAPPER_CHAT_MAX_TURNS", "wrapper.chat_max_turns", "0")
     wrapper_chat_max_tokens_raw = _v("WRAPPER_CHAT_MAX_TOKENS", "wrapper.chat_max_tokens", "0")
     wrapper_model_name = _v("WRAPPER_MODEL_NAME", "wrapper.model_name", "") or ""
+    wrapper_auth_required_raw = _v("WRAPPER_AUTH_REQUIRED", "wrapper.auth_required", "true")
 
     # --- MCP ---
     mcp_api_base = _v("MCP_API_BASE", "mcp.api_base")
+    mcp_auth_required_raw = _v("MCP_AUTH_REQUIRED", "mcp.auth_required", "true")
 
     # --- Milvus (non-secret connection URL) ---
     milvus_url = _v("MILVUS_URL", "milvus.url", "")
@@ -621,6 +625,8 @@ def load_config(command: str, config_path: Path | None = None) -> Config:
     hyde_passages = _parse_int(hyde_passages_raw, default=1)
     wrapper_chat_max_turns = _parse_int(wrapper_chat_max_turns_raw, default=0)
     wrapper_chat_max_tokens = _parse_int(wrapper_chat_max_tokens_raw, default=0)
+    wrapper_auth_required = _parse_bool(wrapper_auth_required_raw, default=True)
+    mcp_auth_required = _parse_bool(mcp_auth_required_raw, default=True)
     langsmith_tracing = _parse_bool(langsmith_tracing_raw, default=False)
     langsmith_prompts = _parse_bool(langsmith_prompts_raw, default=False)
     langfuse_tracing = _parse_bool(langfuse_tracing_raw, default=False)
@@ -752,9 +758,11 @@ def load_config(command: str, config_path: Path | None = None) -> Config:
             chat_max_turns=wrapper_chat_max_turns,
             chat_max_tokens=wrapper_chat_max_tokens,
             model_name=wrapper_model_name,
+            auth_required=wrapper_auth_required,
         ),
         mcp=McpConfig(
             api_base=str(mcp_api_base or ""),
+            auth_required=mcp_auth_required,
         ),
         milvus=MilvusConfig(
             url=str(milvus_url),

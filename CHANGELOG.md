@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html),
 and commits should be formatted using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+- Server: Add `auth_required` flag to openai and mcp server config.
+
 ## [0.15.0] - 2026-04-13
 
 ### Added
@@ -506,6 +512,7 @@ trivial and everything continues working exactly the same.
 
 
 
+[unreleased]: https://github.com/moodlehq/wiki-rag/compare/v0.15.0..HEAD
 [0.15.0]: https://github.com/moodlehq/wiki-rag/compare/v0.14.0..v0.15.0
 [0.14.0]: https://github.com/moodlehq/wiki-rag/compare/v0.13.1..v0.14.0
 [0.13.1]: https://github.com/moodlehq/wiki-rag/compare/v0.13.0..v0.13.1

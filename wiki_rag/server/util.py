@@ -168,7 +168,13 @@ async def validate_authentication(auth: HTTPAuthorizationCredentials = Depends(H
     - local: If the token is in AUTH_TOKENS environment variable (comma separated list).
     - remote: The token, forwarded with the same Authorization header, is validated against
               a remote service (AUTH_URL) that returns 200 if valid.
+
+    When wrapper.auth_required is false, all requests are allowed through without any token check.
     """
+    assert _config_module.cfg is not None, "load_config() must be called before validate_authentication()"
+    if not _config_module.cfg.wrapper.auth_required:
+        return
+
     # Ensure that the token is present and is a bearer token.
     if not auth or auth.scheme.lower() != "bearer" or not auth.credentials:
         raise HTTPException(

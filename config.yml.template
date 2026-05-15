@@ -189,12 +189,20 @@ wrapper:
   # Leave empty to use collection.name.
   model_name: ""
 
+  # Set to false to disable authentication (for local development only — never in production).
+  # When true and neither AUTH_TOKENS nor AUTH_URL is set, no client will be able to connect.
+  auth_required: true
+
 # ---------------------------------------------------------------------------
 # MCP server (wr-mcp)
 # ---------------------------------------------------------------------------
 mcp:
   # Bind address for the MCP server (host:port).
   api_base: "0.0.0.0:8081"
+
+  # Set to false to disable authentication (for local development only — never in production).
+  # When true and neither AUTH_TOKENS nor AUTH_URL is set, no client will be able to connect.
+  auth_required: true
 
 # ---------------------------------------------------------------------------
 # Milvus vector store (non-secret connection settings)

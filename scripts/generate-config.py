@@ -248,8 +248,10 @@ def _generate_yaml(env_source: Path | None) -> str:
     wrapper_turns, wrapper_turns_src = _get("WRAPPER_CHAT_MAX_TURNS", "0")
     wrapper_tkns, wrapper_tkns_src = _get("WRAPPER_CHAT_MAX_TOKENS", "0")
     wrapper_model, wrapper_model_src = _get("WRAPPER_MODEL_NAME", "")
+    wrapper_auth_req, wrapper_auth_req_src = _get("WRAPPER_AUTH_REQUIRED", "true")
 
     mcp_base, mcp_base_src = _get("MCP_API_BASE", "0.0.0.0:8081")
+    mcp_auth_req, mcp_auth_req_src = _get("MCP_AUTH_REQUIRED", "true")
 
     milvus_url, milvus_url_src = _get("MILVUS_URL", "http://0.0.0.0:19530")
 
@@ -389,6 +391,7 @@ def _generate_yaml(env_source: Path | None) -> str:
         f"  chat_max_turns: {_fmt_int(wrapper_turns, default=0)}{_cmt(wrapper_turns_src, 1)}",
         f"  chat_max_tokens: {_fmt_int(wrapper_tkns, default=0)}{_cmt(wrapper_tkns_src, 1)}",
         f"  model_name: {_fmt_str(wrapper_model)}{_cmt(wrapper_model_src, 1)}",
+        f"  auth_required: {_fmt_bool(wrapper_auth_req, default=True)}{_cmt(wrapper_auth_req_src, 1)}",
         "",
     ]
 
@@ -399,6 +402,7 @@ def _generate_yaml(env_source: Path | None) -> str:
         "# ---------------------------------------------------------------------------",
         "mcp:",
         f"  api_base: {_fmt_str(mcp_base)}{_cmt(mcp_base_src, 1)}",
+        f"  auth_required: {_fmt_bool(mcp_auth_req, default=True)}{_cmt(mcp_auth_req_src, 1)}",
         "",
     ]
 

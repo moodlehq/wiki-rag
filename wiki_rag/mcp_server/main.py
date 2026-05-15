@@ -27,6 +27,15 @@ def main():
 
     cfg = load_config(command="mcp")
 
+    if cfg.mcp.auth_required:
+        if not cfg.auth_tokens and not cfg.auth_url:
+            logger.warning(
+                "Authentication is enabled but neither AUTH_TOKENS nor AUTH_URL is configured"
+                " — no client will be able to connect."
+            )
+    else:
+        logger.warning("Authentication is DISABLED — the server is running open with no auth required.")
+
     # Parse the bind address from mcp.api_base.
     parts = cfg.mcp.api_base.split(":")
     mcp_server = parts[0]
@@ -61,6 +70,8 @@ def main():
     vector.store = load_vector_store(cfg.index_vendor)
 
     # Start the mcp_server server
+    if not cfg.mcp.auth_required:
+        mcp.auth = None  # FastMCP reads self.auth at run() time, not at __init__ time.
     mcp.run("http", host=mcp_server, port=mcp_port)
 
     logger.info("wiki_rag-server-mcp_server finished.")

@@ -28,6 +28,15 @@ def main():
 
     cfg = load_config(command="server")
 
+    if cfg.wrapper.auth_required:
+        if not cfg.auth_tokens and not cfg.auth_url:
+            logger.warning(
+                "Authentication is enabled but neither AUTH_TOKENS nor AUTH_URL is configured"
+                " — no client will be able to connect."
+            )
+    else:
+        logger.warning("Authentication is DISABLED — the server is running open with no auth required.")
+
     # Parse the bind address from wrapper.api_base.
     parts = cfg.wrapper.api_base.split(":")
     wrapper_server = parts[0]
